@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NALCO PDF Extractor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="hero">
+
+        <img src="image.png" alt="NALCO Logo" class="nalco-logo">
+
+        <h1>Welcome to Intelligent PDF Extraction System</h1>
+
+    
+        <div class="login-card">
+
+            <h2>Login</h2>
+
+            <input type="text" placeholder="Enter Username">
+
+            <input type="password" placeholder="Enter Password">
+
+            <button type="button" onclick="showApp(event)">
+                Continue
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="container" id="mainApp">
+
+        <h1>📄 Intelligent PDF Information Extraction System</h1>
+
+        <p class="subtitle">
+            Upload PDF or Image to extract structured information using
+            OCR, Machine Learning, NLP and Groq AI.
+        </p>
+
+        <div class="upload-box">
+
+            <input
+                type="file"
+                id="fileInput"
+                accept=".pdf,.jpg,.jpeg,.png"
+            >
+
+            <button
+                type="button"
+                onclick="uploadFile(event)"
+            >
+                Extract Information
+            </button>
+
+        </div>
+
+        <p id="loading"></p>
+
+        <div id="result" class="result-area">
+
+            <p class="placeholder">
+                Result will appear here...
+            </p>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
