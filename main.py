@@ -133,17 +133,20 @@ def extract_entities(text):
 def extract_text_with_ocr_from_pdf(file_path):
     ocr_text = ""
 
-   if os.name == "nt":
-    images = convert_from_path(
-        file_path,
-        dpi=300,
-        poppler_path=POPPLER_PATH
-    )
-else:
-    images = convert_from_path(
-        file_path,
-        dpi=300
-    )
+    if os.name == "nt":
+        POPPLER_PATH = r"C:\Users\satab\Downloads\Release-26.02.0-0\poppler-26.02.0\Library\bin"
+
+        images = convert_from_path(
+            file_path,
+            dpi=300,
+            poppler_path=POPPLER_PATH
+        )
+    else:
+        images = convert_from_path(
+            file_path,
+            dpi=300
+        )
+
     for image in images:
         text = pytesseract.image_to_string(image)
         ocr_text += text + "\n"
