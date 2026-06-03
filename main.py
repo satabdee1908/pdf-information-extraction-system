@@ -27,11 +27,12 @@ app.add_middleware(
 )
 
 UPLOAD_FOLDER = "uploads"
+import os
 
-TESSERACT_PATH = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-POPPLER_PATH = r"C:\Users\satab\Downloads\Release-26.02.0-0\poppler-26.02.0\Library\bin"
+if os.name == "nt":
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
+
 
 model = joblib.load("document_classifier.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
@@ -132,12 +133,17 @@ def extract_entities(text):
 def extract_text_with_ocr_from_pdf(file_path):
     ocr_text = ""
 
+   if os.name == "nt":
     images = convert_from_path(
         file_path,
         dpi=300,
         poppler_path=POPPLER_PATH
     )
-
+else:
+    images = convert_from_path(
+        file_path,
+        dpi=300
+    )
     for image in images:
         text = pytesseract.image_to_string(image)
         ocr_text += text + "\n"
