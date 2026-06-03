@@ -92,3 +92,26 @@ JSON Response Generation
 The system successfully performs document classification, OCR-based text extraction, named entity recognition, and AI-powered information extraction from PDFs and images.
 
 The project integrates Machine Learning, Natural Language Processing, OCR, and Large Language Models into a unified document understanding pipeline capable of processing both structured and unstructured documents.
+
+
+## Screenshots
+
+### Login Page
+
+![Login Page](screenshot/login_page.png)
+
+### Upload Interface
+
+![Upload Interface](screenshot/upload_page.png)
+
+### Extraction Result
+
+![Extraction Result](screenshot/output_page.png)
+
+### Swagger UI - Request
+
+![Swagger Request](screenshot/swagger_request.png)
+
+### Swagger UI - Response
+
+![Swagger Response](screenshot/swagger_response.png)
