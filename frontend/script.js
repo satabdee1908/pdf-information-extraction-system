@@ -22,17 +22,31 @@ async function uploadFile(event) {
         return;
     }
 
-    loading.innerText = "Processing document... please wait.";
+    loading.innerText = "Processing document... please wait. OCR files may take 1–2 minutes.";
     result.innerHTML = "<p class='placeholder'>Please wait, extracting information...</p>";
 
     const formData = new FormData();
     formData.append("file", fileInput.files[0]);
 
     try {
+        const controller = new AbortController();
+
+        const timeoutId = setTimeout(() => {
+            controller.abort();
+        }, 180000);
+
         const response = await fetch("https://pdf-information-extraction-system.onrender.com/extract-text", {
             method: "POST",
-            body: formData
+            body: formData,
+            signal: controller.signal
         });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || "Server Error");
+        }
 
         const data = await response.json();
 
@@ -84,6 +98,16 @@ async function uploadFile(event) {
 
     } catch (error) {
         loading.innerText = "Error occurred.";
-        result.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+
+        if (error.name === "AbortError") {
+            result.innerHTML = `
+                <div class="error">
+                    Request timed out. OCR files may take longer on the free server. 
+                    Please try a smaller image/PDF.
+                </div>
+            `;
+        } else {
+            result.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+        }
     }
 }
