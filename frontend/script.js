@@ -56,6 +56,11 @@ async function uploadFile(event) {
         const fields = ai.important_fields || {};
         const entities = ai.important_entities || {};
 
+        const people = entities.people || entities.persons || [];
+        const organizations = entities.organizations || entities.orgs || [];
+        const dates = entities.dates || [];
+        const locations = entities.locations || entities.places || [];
+
         result.innerHTML = `
             <div class="card">
                 <h2>Document Overview</h2>
@@ -84,10 +89,10 @@ async function uploadFile(event) {
 
             <div class="card">
                 <h2>Entities</h2>
-                <p><strong>People:</strong> ${(entities.people || []).join(", ") || "None"}</p>
-                <p><strong>Organizations:</strong> ${(entities.organizations || []).join(", ") || "None"}</p>
-                <p><strong>Dates:</strong> ${(entities.dates || []).join(", ") || "None"}</p>
-                <p><strong>Locations:</strong> ${(entities.locations || []).join(", ") || "None"}</p>
+                <p><strong>People:</strong> ${people.join(", ") || "None"}</p>
+                <p><strong>Organizations:</strong> ${organizations.join(", ") || "None"}</p>
+                <p><strong>Dates:</strong> ${dates.join(", ") || "None"}</p>
+                <p><strong>Locations:</strong> ${locations.join(", ") || "None"}</p>
             </div>
 
             <details class="raw-json">
