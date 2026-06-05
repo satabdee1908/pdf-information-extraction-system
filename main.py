@@ -1,3 +1,4 @@
+
 from groq import Groq
 from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File
@@ -20,7 +21,11 @@ groq_client = Groq(
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://poetic-kataifi-554d68.netlify.app",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
