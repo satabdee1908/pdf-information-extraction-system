@@ -5,7 +5,6 @@ window.onload = function () {
 
 function showApp(event) {
     if (event) event.preventDefault();
-
     document.querySelector(".hero").style.display = "none";
     document.getElementById("mainApp").style.display = "block";
 }
@@ -22,33 +21,25 @@ async function uploadFile(event) {
         return;
     }
 
-    loading.innerText = "Processing document... please wait. OCR files may take 1–2 minutes.";
+    loading.innerText = "Processing document... OCR files may take 2–4 minutes on cloud server.";
     result.innerHTML = "<p class='placeholder'>Please wait, extracting information...</p>";
 
     const formData = new FormData();
     formData.append("file", fileInput.files[0]);
 
     try {
-        const controller = new AbortController();
-
-        const timeoutId = setTimeout(() => {
-            controller.abort();
-        }, 180000);
-
         const response = await fetch("https://pdf-information-extraction-system.onrender.com/extract-text", {
             method: "POST",
-            body: formData,
-            signal: controller.signal
+            body: formData
         });
 
-        clearTimeout(timeoutId);
+        const responseText = await response.text();
 
         if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText || "Server Error");
+            throw new Error(responseText || "Server Error");
         }
 
-        const data = await response.json();
+        const data = JSON.parse(responseText);
 
         loading.innerText = "Extraction completed.";
 
@@ -103,16 +94,6 @@ async function uploadFile(event) {
 
     } catch (error) {
         loading.innerText = "Error occurred.";
-
-        if (error.name === "AbortError") {
-            result.innerHTML = `
-                <div class="error">
-                    Request timed out. OCR files may take longer on the free server. 
-                    Please try a smaller image/PDF.
-                </div>
-            `;
-        } else {
-            result.innerHTML = `<div class="error">Error: ${error.message}</div>`;
-        }
+        result.innerHTML = `<div class="error">Error: ${error.message}</div>`;
     }
 }
